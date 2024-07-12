@@ -1,0 +1,49 @@
+{% extends 'blog/base.html' %} {% block content %}
+<article class="post">
+    <aside class="aside-btns">
+        {% if user.is_authenticated %}
+        <a class="btn btn-secondary" href="{% url 'post_edit' pk=post.pk %}">
+            {% include './icons/pencil-fill.svg' %}
+        </a>
+        {% if not post.published_date %}
+        <form
+            method="POST"
+            action="{% url 'post_publish' pk=post.pk %}"
+            class="inline-form">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-secondary" name="publish">
+                Publish
+            </button>
+        </form>
+        {% endif %}
+        <form
+            method="POST"
+            action="{% url 'post_remove' pk=post.pk %}"
+            class="inline-form del-form">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-secondary del-btn"
+                name="delete">
+                {% include './icons/trash.svg' %}
+            </button>
+        </form>
+        {% endif %}
+    </aside>
+    {% if post.published_date %}
+    <div class="date">{{ post.published_date }}</div>
+    {% endif %}
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.text | linebreaksbr }}</p>
+</article>
+<hr />
+<a class="btn btn-default"
+    href="{% url 'add_comment_to_post' pk=post.pk %}"><u>Add
+        comment</u></a>
+{% for comment in post.comments.all %}
+<div class="comment">
+    <div class="date">{{ comment.created_date }}</div>
+    <strong>{{ comment.author }}</strong>
+    <p>{{ comment.text|linebreaks }}</p>
+</div>
+{% empty %}
+<p>No comments here yet :(</p>
+{% endfor %} {% endblock %}
