@@ -23,4 +23,5 @@ urlpatterns = [
         name="logout",
     ),
     path("post/<int:pk>/like/", views.blog_post_like, name="blog_post_like"),
+    path("signup/", views.signup, name="signup"),
 ]

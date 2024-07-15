@@ -5,7 +5,8 @@
     <div class="title-wrapper">
         <aside class="aside-btns">
             {% if user.is_authenticated %}
-            <a class="btn btn-secondary" href="{% url 'post_edit' pk=post.pk %}">
+            <a class="btn btn-secondary"
+                href="{% url 'post_edit' pk=post.pk %}">
                 {% include './icons/pencil-fill.svg' %}
             </a>
             {% if not post.published_date %}
@@ -30,22 +31,20 @@
         {% if post.published_date %}
         <div class="date">{{ post.published_date }}</div>
         {% endif %}
-        <h2>{{ post.title }}</h2>
+        <h2 class="post-text" >{{ post.title }}</h2>
     </div>
-    <p>{{ post.text | linebreaksbr }}</p>
+    <p >{{ post.text | linebreaksbr }}</p>
 
     <div class="post-detail">
         <form action="{% url 'blog_post_like' pk=post.pk %}" method="post">
             {% csrf_token %}
             {% if user.is_authenticated %}
             {% if user in post.likes.all %}
-            <button type="submit" name="unlike"
-                class="inline-form">
+            <button type="submit" name="unlike" class="inline-form">
                 {% include './icons/hand-thumbs-down.svg' %}
             </button>
             {% else %}
-            <button type="submit" name="like"
-                class="inline-form ">
+            <button type="submit" name="like" class="inline-form ">
                 {% include './icons/hand-thumbs-up.svg' %}
             </button>
             {% endif %}

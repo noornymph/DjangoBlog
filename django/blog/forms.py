@@ -1,6 +1,8 @@
 """This module contains forms of our django app."""
 
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 from .models import Comment, Post
 
@@ -29,3 +31,15 @@ class CommentForm(forms.ModelForm):
             "author",
             "text",
         )
+
+
+class SignUpForm(UserCreationForm):
+    """This class represents the sign-up form."""
+
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        """This class represents the structure of sign-up form"""
+
+        model = User
+        fields = ("username", "email", "password1", "password2")

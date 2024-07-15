@@ -50,3 +50,14 @@ class Comment(models.Model):
 
     def __str__(self):
         return str(self.text)
+
+
+class Profile(models.Model):
+    "This function contains the profile model of the user."
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(blank=True)
+
+    # pylint: disable=no-member
+    def __str__(self):
+        return str(self.user.username)

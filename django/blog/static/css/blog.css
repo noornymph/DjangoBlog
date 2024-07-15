@@ -121,9 +121,12 @@ h4 {
 }
 
 .new-btn {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
     color: #FFFFFF
 }
 
@@ -132,7 +135,7 @@ h4 {
     height: 100%;
     color: #FFFFFF;
 
-}
+} 
 
 .welcome-text {
     color: #ffffff;
@@ -146,3 +149,28 @@ h4 {
     align-items: center;
     justify-content: space-between;
 }
+
+.header-wrapper{
+    display :flex;
+    gap :40px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.signup-btn {
+    display: inline-block;
+    width: max-content;
+    height: max-content;
+    color: #FFFFFF;
+    background-color:#c25100 ;
+    border-color: #c25100;
+    border-radius: 5px 5px 5px;
+}
+
+.post-text{
+    max-width: 500px;
+}
+
+
+
