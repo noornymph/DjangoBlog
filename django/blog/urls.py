@@ -22,4 +22,5 @@ urlpatterns = [
         auth_views.LogoutView.as_view(template_name="registration/logout.html"),
         name="logout",
     ),
+    path("post/<int:pk>/like/", views.blog_post_like, name="blog_post_like"),
 ]

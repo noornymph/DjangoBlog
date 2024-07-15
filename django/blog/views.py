@@ -2,7 +2,9 @@
 
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils import timezone
 
 from .forms import CommentForm, PostForm
@@ -61,6 +63,7 @@ def post_draft_list(request):
     return render(request, "blog/post_draft_list.html", {"posts": posts})
 
 
+@login_required
 def post_publish(request, pk):
     """This view represents the publishing of the post."""
     post = get_object_or_404(Post, pk=pk)
@@ -76,6 +79,18 @@ def post_remove(request, pk):
     if request.method == "POST":
         post.delete()
     return redirect("post_list")
+
+
+@login_required
+def blog_post_like(request, pk):
+    """This view is related to the number of likes on the blog post."""
+    post = get_object_or_404(Post, pk=pk)
+    if post.likes.filter(id=request.user.id).exists():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+
+    return redirect("post_detail", pk=pk)
 
 
 def add_comment_to_post(request, pk):

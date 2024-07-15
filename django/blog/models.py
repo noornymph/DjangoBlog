@@ -1,6 +1,7 @@
 """This module represents the model of the blog post"""
 
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
@@ -13,8 +14,14 @@ class Post(models.Model):
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
+    likes = models.ManyToManyField(User, related_name="blogpost_like")
 
     objects = models.Manager()
+
+    # pylint: disable=no-member
+    def number_of_likes(self):
+        """This function counts the number of likes on the blog post"""
+        return self.likes.count()
 
     def publish(self):
         """This function manages the publishing time and date"""
