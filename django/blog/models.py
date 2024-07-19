@@ -55,8 +55,17 @@ class Comment(models.Model):
 class Profile(models.Model):
     "This function contains the profile model of the user."
 
+    USER_CATEGORIES = [
+        ("author", "Author"),
+        ("editor", "Editor"),
+        ("subscriber", "Subscriber"),
+    ]
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True)
+    category = models.CharField(
+        max_length=50, choices=USER_CATEGORIES, default="subscriber"
+    )
 
     # pylint: disable=no-member
     def __str__(self):

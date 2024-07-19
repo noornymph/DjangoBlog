@@ -1,12 +1,12 @@
 """This module contains the view of our django app."""
 
+from blog.models import Post, Profile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
-from .forms import CommentForm, PostForm, SignUpForm
-from .models import Post, Profile
+from .forms import CommentForm, PostForm, ProfileForm, SignUpForm
 
 
 def signup(request):
@@ -14,18 +14,25 @@ def signup(request):
 
     if request.method == "POST":
         form = SignUpForm(request.POST)
-        if form.is_valid():
+        profile_form = ProfileForm(request.POST)
+        if form.is_valid() and profile_form.is_valid():
             user = form.save()
             user.refresh_from_db()
-            Profile.objects.create(user=user)
-            user.save()
+            profile_form = ProfileForm(request.POST, instance=user.profile)
+            profile_form.full_clean()
+            profile_form.save()
             raw_password = form.cleaned_data.get("password1")
             user = authenticate(username=user.username, password=raw_password)
             login(request, user)
             return redirect("post_list")
     else:
         form = SignUpForm()
-    return render(request, "registration/signup.html", {"form": form})
+        profile_form = ProfileForm()
+    return render(
+        request,
+        "registration/signup.html",
+        {"form": form, "profile_form": profile_form},
+    )
 
 
 def post_list(request):
@@ -129,3 +136,17 @@ def logout_view(request):
     """This view deals with logging out"""
     logout(request)
     return redirect("post_list")
+
+
+def categorized_users(request):
+    """View to display users categorized by their roles"""
+    authors = Profile.objects.filter(category="author")
+    editors = Profile.objects.filter(category="editor")
+    subscribers = Profile.objects.filter(category="subscriber")
+
+    context = {
+        "authors": authors,
+        "editors": editors,
+        "subscribers": subscribers,
+    }
+    return render(request, "blog/categorized_users.html", context)
