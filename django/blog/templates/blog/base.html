@@ -19,7 +19,7 @@
             <div class="header-wrapper">
                 <h1><a href="/">Wanderlust Chronicles</a></h1>
                 {% if user.is_authenticated %}
-                <p class="welcome-text">Hello <i>{{ user.username }}</i>!!
+                <p class="welcome-text">Hello {{ user.username }}!!
                 </p>
                 <div class="d-flex flex-row w-25 justify-content-between">
                     <p class="welcome-text">

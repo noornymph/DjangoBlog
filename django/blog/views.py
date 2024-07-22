@@ -1,4 +1,4 @@
-"""This module contains the view of our Django app."""
+"""This module contains the views of our Django app."""
 
 from blog.models import Post, Profile
 from django.contrib.auth import authenticate, login, logout
@@ -18,7 +18,7 @@ def signup(request):
         if form.is_valid() and profile_form.is_valid():
             user = form.save()
             profile = Profile(user=user, **profile_form.cleaned_data)
-            profile.save()  # Ensure profile is saved
+            profile.save()
             raw_password = form.cleaned_data.get("password1")
             user = authenticate(username=user.username, password=raw_password)
             login(request, user)
@@ -47,8 +47,8 @@ def post_detail(request, pk):
     return render(request, "blog/post_detail.html", {"post": post})
 
 
-@permission_required("blog.can_add_post", raise_exception=True)
 @login_required
+@permission_required("blog.can_add_post", raise_exception=True)
 def post_new(request):
     """This view represents the creation of a new post."""
     if request.method == "POST":
@@ -58,13 +58,15 @@ def post_new(request):
             post.author = request.user
             post.save()
             return redirect("post_detail", pk=post.pk)
+        else:
+            return render(request, "blog/post_edit.html", {"form": form})
     else:
         form = PostForm()
     return render(request, "blog/post_edit.html", {"form": form})
 
 
-@permission_required("blog.can_edit_post", raise_exception=True)
 @login_required
+@permission_required("blog.can_edit_post", raise_exception=True)
 def post_edit(request, pk):
     """This view represents the editing of an existing post."""
     post = get_object_or_404(Post, pk=pk)
@@ -75,18 +77,21 @@ def post_edit(request, pk):
             post.author = request.user
             post.save()
             return redirect("post_detail", pk=post.pk)
+        else:
+            return render(request, "blog/post_edit.html", {"form": form})
     else:
         form = PostForm(instance=post)
     return render(request, "blog/post_edit.html", {"form": form})
 
 
-@permission_required("blog.can_delete_post", raise_exception=True)
 @login_required
+@permission_required("blog.can_delete_post", raise_exception=True)
 def post_remove(request, pk):
     """This view represents the deletion of a post."""
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
         post.delete()
+        return redirect("post_list")
     return redirect("post_list")
 
 
@@ -103,7 +108,7 @@ def post_publish(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
         post.publish()
-    return redirect("post_detail", pk=pk)
+    return redirect("post_detail", pk=post.pk)
 
 
 @login_required
@@ -114,8 +119,7 @@ def blog_post_like(request, pk):
         post.likes.remove(request.user)
     else:
         post.likes.add(request.user)
-
-    return redirect("post_detail", pk=pk)
+    return redirect("post_detail", pk=post.pk)
 
 
 @login_required
@@ -152,3 +156,12 @@ def categorized_users(request):
         "subscribers": subscribers,
     }
     return render(request, "blog/categorized_users.html", context)
+
+
+def permission_denied(request, exception):
+    """View to render the permission denied page."""
+    return render(
+        request,
+        "blog/permission_denied.html",
+        {"message": "You do not have the rights to perform this operation!!"},
+    )

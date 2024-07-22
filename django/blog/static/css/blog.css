@@ -145,9 +145,9 @@ h4 {
 
 .title-wrapper{
     display :flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    gap:10px;
+    margin-bottom: 15px;
 }
 
 .header-wrapper{
@@ -170,6 +170,7 @@ h4 {
 
 .post-text{
     max-width: 500px;
+    word-spacing: 0.1rem;
 }
 
 

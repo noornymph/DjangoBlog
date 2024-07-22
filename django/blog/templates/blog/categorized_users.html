@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Categorized Users</title>
-</head>
-<body>
-    <h1>Authors</h1>
-    <ul>
-        {% for author in authors %}
+    <head>
+        <title>Categorized Users</title>
+    </head>
+    <body>
+        <h1>Authors</h1>
+        <ul>
+            {% for author in authors %}
             <li>{{ author.user.username }}</li>
-        {% endfor %}
-    </ul>
+            {% endfor %}
+        </ul>
 
-    <h1>Editors</h1>
-    <ul>
-        {% for editor in editors %}
+        <h1>Editors</h1>
+        <ul>
+            {% for editor in editors %}
             <li>{{ editor.user.username }}</li>
-        {% endfor %}
-    </ul>
+            {% endfor %}
+        </ul>
 
-    <h1>Subscribers</h1>
-    <ul>
-        {% for subscriber in subscribers %}
+        <h1>Subscribers</h1>
+        <ul>
+            {% for subscriber in subscribers %}
             <li>{{ subscriber.user.username }}</li>
-        {% endfor %}
-    </ul>
-</body>
+            {% endfor %}
+        </ul>
+    </body>
 </html>

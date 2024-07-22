@@ -3,35 +3,38 @@
 {% block content %}
 <article class="post">
     <div class="title-wrapper">
-        <aside class="aside-btns">
-            {% if user.is_authenticated %}
-            <a class="btn btn-secondary"
-                href="{% url 'post_edit' pk=post.pk %}">
-                {% include './icons/pencil-fill.svg' %}
-            </a>
-            {% if not post.published_date %}
-            <form method="POST" action="{% url 'post_publish' pk=post.pk %}"
-                class="inline-form">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-secondary" name="publish">
-                    Publish
-                </button>
-            </form>
-            {% endif %}
-            <form method="POST" action="{% url 'post_remove' pk=post.pk %}"
-                class="inline-form del-form">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-secondary del-btn"
-                    name="delete">
-                    {% include './icons/trash.svg' %}
-                </button>
-            </form>
-            {% endif %}
-        </aside>
         {% if post.published_date %}
-        <div class="date">{{ post.published_date }}</div>
+        <div class="date">{{ post.published_date}}</div>
         {% endif %}
-        <h2 class="post-text">{{ post.title }}</h2>
+        <div class="d-flex flex-row justify-content-between align-items-center">
+            <h2 class="post-text">{{ post.title}}</h2>
+            <aside class="aside-btns">
+                {% if user.is_authenticated %}
+                <a class="btn btn-secondary"
+                    href="{% url 'post_edit' pk=post.pk %}">
+                    {% include './icons/pencil-fill.svg' %}
+                </a>
+                {% if not post.published_date %}
+                <form method="POST" action="{% url 'post_publish' pk=post.pk %}"
+                    class="inline-form">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary"
+                        name="publish">
+                        Publish
+                    </button>
+                </form>
+                {% endif %}
+                <form method="POST" action="{% url 'post_remove' pk=post.pk %}"
+                    class="inline-form del-form">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary del-btn"
+                        name="delete">
+                        {% include './icons/trash.svg' %}
+                    </button>
+                </form>
+                {% endif %}
+            </aside>
+        </div>
     </div>
     <p>{{ post.text | linebreaksbr }}</p>
 

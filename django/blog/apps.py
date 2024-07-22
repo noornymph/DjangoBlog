@@ -9,7 +9,6 @@ class BlogConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "blog"
 
-    # noqa: F401
     def ready(self):
         """Import the signal module on startup"""
         import blog.signals

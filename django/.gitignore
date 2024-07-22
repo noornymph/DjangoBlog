@@ -19,3 +19,5 @@ db.sqlite3
 .DS_Store
 .fseventsd
 .Spotlight-V100
+
+.icons/
