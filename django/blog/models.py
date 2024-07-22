@@ -18,6 +18,15 @@ class Post(models.Model):
 
     objects = models.Manager()
 
+    class Meta:
+        """Meta options for the Post model."""
+
+        permissions = [
+            ("can_edit_post", "Can edit post"),
+            ("can_delete_post", "Can delete post"),
+            ("can_add_post", "Can add post"),
+        ]
+
     # pylint: disable=no-member
     def number_of_likes(self):
         """This function counts the number of likes on the blog post"""
