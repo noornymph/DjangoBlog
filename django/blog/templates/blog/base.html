@@ -18,9 +18,9 @@
 
             <div class="header-wrapper">
                 <h1><a href="/">Wanderlust Chronicles</a></h1>
+                {% if user.is_authenticated %}
                 <p class="welcome-text">Hello <i>{{ user.username }}</i>!!
                 </p>
-                {% if user.is_authenticated %}
                 <div class="d-flex flex-row w-25 justify-content-between">
                     <p class="welcome-text">
                         <form method="post" action="{% url 'logout' %}"

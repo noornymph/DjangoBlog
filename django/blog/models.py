@@ -6,6 +6,11 @@ from django.db import models
 from django.utils import timezone
 
 
+def get_today():
+    """Returns the current date with timezone information."""
+    return timezone.now().date()
+
+
 class Post(models.Model):
     """This class represents the post model of our blog"""
 

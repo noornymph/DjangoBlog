@@ -17,10 +17,8 @@ def signup(request):
         profile_form = ProfileForm(request.POST)
         if form.is_valid() and profile_form.is_valid():
             user = form.save()
-            user.refresh_from_db()
-            profile_form = ProfileForm(request.POST, instance=user.profile)
-            profile_form.full_clean()
-            profile_form.save()
+            profile = Profile(user=user, **profile_form.cleaned_data)
+            profile.save()  # Ensure profile is saved
             raw_password = form.cleaned_data.get("password1")
             user = authenticate(username=user.username, password=raw_password)
             login(request, user)
