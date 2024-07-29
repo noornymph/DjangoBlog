@@ -1,0 +1,74 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<article class="post">
+    <div class="title-wrapper">
+        {% if post.published_date %}
+        <div class="date">{{ post.published_date}}</div>
+        {% endif %}
+        <div class="d-flex flex-row justify-content-between align-items-center">
+            <h2 class="post-text">{{ post.title}}</h2>
+            <aside class="aside-btns">
+                {% if user.is_authenticated %}
+                <a class="btn btn-secondary"
+                    href="{% url 'post_edit' pk=post.pk %}">
+                    {% include './icons/pencil-fill.svg' %}
+                </a>
+                {% if not post.published_date %}
+                <form method="POST" action="{% url 'post_publish' pk=post.pk %}"
+                    class="inline-form">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary"
+                        name="publish">
+                        Publish
+                    </button>
+                </form>
+                {% endif %}
+                <form method="POST" action="{% url 'post_remove' pk=post.pk %}"
+                    class="inline-form del-form">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary del-btn"
+                        name="delete">
+                        {% include './icons/trash.svg' %}
+                    </button>
+                </form>
+                {% endif %}
+            </aside>
+        </div>
+    </div>
+    <p>{{ post.text | linebreaksbr }}</p>
+
+    <div class="post-detail">
+        <form action="{% url 'blog_post_like' pk=post.pk %}" method="post">
+            {% csrf_token %}
+            {% if user.is_authenticated %}
+            {% if user in post.likes.all %}
+            <button type="submit" name="unlike" class="inline-form">
+                {% include './icons/hand-thumbs-down.svg' %}
+            </button>
+            {% else %}
+            <button type="submit" name="like" class="inline-form ">
+                {% include './icons/hand-thumbs-up.svg' %}
+            </button>
+            {% endif %}
+            {% else %}
+            <p><a href="{% url 'login' %}?next={{ request.path }}">Log in</a> to
+                like this post.</p>
+            {% endif %}
+        </form>
+        <p>Likes: {{ post.likes.count }}</p>
+    </div>
+</article>
+<hr />
+<a class="btn btn-default"
+    href="{% url 'add_comment_to_post' pk=post.pk %}"><u>Add comment</u></a>
+{% for comment in post.comments.all %}
+<div class="comment">
+    <div class="date">{{ comment.created_date }}</div>
+    <strong>{{ comment.author }}</strong>
+    <p>{{ comment.text|linebreaks }}</p>
+</div>
+{% empty %}
+<p>No comments here yet :(</p>
+{% endfor %}
+{% endblock %}
