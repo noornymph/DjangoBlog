@@ -9,6 +9,10 @@ This repository is created to host the blog project created in django.This is a 
 
 <img width="1197" alt="Screenshot 2024-08-01 at 6 14 51 PM" src="https://github.com/user-attachments/assets/9b7fbe7a-a53e-44e1-92f8-2026e98498eb">
 
+# Post Detail Page
+
+<img width="1440" alt="Screenshot 2024-08-01 at 6 28 39 PM" src="https://github.com/user-attachments/assets/04e97cba-84ee-410b-823e-df5be3292416">
+
 # Post Creation Form
 
 <img width="1424" alt="Screenshot 2024-08-01 at 6 19 19 PM" src="https://github.com/user-attachments/assets/e680e6e9-d068-412e-884f-3f3ab766b05b">
